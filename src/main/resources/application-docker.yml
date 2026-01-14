@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://auth-db:5432/platform_auth
+  data:
+    redis:
+      host: redis
+      port: 6379
