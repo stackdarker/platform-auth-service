@@ -1,0 +1,27 @@
+package com.stackdarker.platform.auth.config;
+
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+
+@Configuration
+public class StartupConfigDump {
+
+    @Bean
+    ApplicationRunner dump(Environment env) {
+        return args -> {
+            System.out.println("=== RESOLVED DATASOURCE CONFIG ===");
+            System.out.println("spring.datasource.url=" + env.getProperty("spring.datasource.url"));
+            System.out.println("spring.datasource.username=" + env.getProperty("spring.datasource.username"));
+            System.out.println("spring.datasource.password=" + mask(env.getProperty("spring.datasource.password")));
+            System.out.println("spring.profiles.active=" + env.getProperty("spring.profiles.active"));
+            System.out.println("=================================");
+        };
+    }
+
+    private String mask(String s) {
+        if (s == null || s.isBlank()) return "(null)";
+        return "********";
+    }
+}

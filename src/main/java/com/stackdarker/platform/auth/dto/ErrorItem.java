@@ -1,5 +1,11 @@
 package com.stackdarker.platform.auth.dto;
 
-public class ErrorItem {
-    
-}
+import java.util.Map;
+
+public record ErrorItem(
+        String code,
+        String message,
+        String field,
+        Object rejectedValue,
+        Map<String, Object> meta
+) {}
