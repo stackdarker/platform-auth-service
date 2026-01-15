@@ -1,6 +1,6 @@
 package com.stackdarker.platform.auth.api;
 
-import com.stackdarker.platform.auth.dto.*;
+import com.stackdarker.platform.auth.api.dto.*;
 import com.stackdarker.platform.auth.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

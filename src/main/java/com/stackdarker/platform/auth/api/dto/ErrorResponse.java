@@ -1,4 +1,4 @@
-package com.stackdarker.platform.auth.dto;
+package com.stackdarker.platform.auth.api.dto;
 
 import java.time.OffsetDateTime;
 import java.util.List;

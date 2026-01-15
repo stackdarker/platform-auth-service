@@ -1,7 +1,8 @@
 package com.stackdarker.platform.auth.service;
 
-import com.stackdarker.platform.auth.dto.PagedSessionsResponse;
 import org.springframework.stereotype.Service;
+
+import com.stackdarker.platform.auth.api.dto.PagedSessionsResponse;
 
 @Service
 public class SessionService {

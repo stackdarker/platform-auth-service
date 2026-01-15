@@ -1,13 +1,14 @@
 package com.stackdarker.platform.auth.exception;
 
-import com.stackdarker.platform.auth.dto.ErrorItem;
-import com.stackdarker.platform.auth.dto.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.stackdarker.platform.auth.api.dto.ErrorItem;
+import com.stackdarker.platform.auth.api.dto.ErrorResponse;
 
 import java.time.OffsetDateTime;
 import java.util.List;

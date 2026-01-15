@@ -1,7 +1,8 @@
 package com.stackdarker.platform.auth.service;
 
-import com.stackdarker.platform.auth.dto.*;
 import org.springframework.stereotype.Service;
+
+import com.stackdarker.platform.auth.api.dto.*;
 
 @Service
 public class AuthService {

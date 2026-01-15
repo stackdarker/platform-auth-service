@@ -1,6 +1,6 @@
 package com.stackdarker.platform.auth.api;
 
-import com.stackdarker.platform.auth.dto.PagedSessionsResponse;
+import com.stackdarker.platform.auth.api.dto.PagedSessionsResponse;
 import com.stackdarker.platform.auth.service.SessionService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
