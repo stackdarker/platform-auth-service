@@ -1,6 +1,7 @@
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\api\AuthController.java
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\api\dto\AuthResponse.java
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\api\dto\AuthTokens.java
+D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\api\dto\AuthTokensResponse.java
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\api\dto\ErrorItem.java
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\api\dto\ErrorResponse.java
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\api\dto\LoginRequest.java
@@ -35,8 +36,9 @@ D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdark
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\service\AuthService.java
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\service\exceptions\EmailAlreadyExistsException.java
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\service\exceptions\InvalidCredentialsException.java
-D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\service\JwtService.java
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\service\SessionService.java
+D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\session\SessionEntity.java
+D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\session\SessionRepository.java
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\token\RefreshTokenEntity.java
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\token\RefreshTokenRepository.java
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\user\UserEntity.java
