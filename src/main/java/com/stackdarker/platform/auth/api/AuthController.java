@@ -1,9 +1,11 @@
 package com.stackdarker.platform.auth.api;
 
-import com.stackdarker.platform.auth.api.dto.*;
+import com.stackdarker.platform.auth.api.dto.LoginRequest;
+import com.stackdarker.platform.auth.api.dto.MeResponse;
+import com.stackdarker.platform.auth.api.dto.RegisterRequest;
 import com.stackdarker.platform.auth.service.AuthService;
 import jakarta.validation.Valid;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,28 +19,13 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> register(@Valid @RequestBody RegisterRequest req) {
-        return ResponseEntity.status(201).body(authService.register(req));
+    @ResponseStatus(HttpStatus.CREATED)
+    public MeResponse register(@Valid @RequestBody RegisterRequest request) {
+        return authService.register(request);
     }
 
     @PostMapping("/login")
-    public AuthTokens login(@Valid @RequestBody LoginRequest req) {
-        return authService.login(req);
-    }
-
-    @PostMapping("/refresh")
-    public AuthTokens refresh(@Valid @RequestBody RefreshRequest req) {
-        return authService.refresh(req);
-    }
-
-    @PostMapping("/logout")
-    public ResponseEntity<Void> logout() {
-        authService.logout();
-        return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/me")
-    public UserResponse me() {
-        return authService.me();
+    public MeResponse login(@Valid @RequestBody LoginRequest request) {
+        return authService.login(request);
     }
 }

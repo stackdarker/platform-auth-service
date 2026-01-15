@@ -36,7 +36,7 @@ public class UserEntity {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
-    protected UserEntity() {
+    public UserEntity() {
         // for JPA
     }
 
