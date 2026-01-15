@@ -84,7 +84,7 @@ public class AuthService {
         UserEntity user = userRepository.findById(rt.getUserId())
                 .orElseThrow(InvalidCredentialsException::new);
 
-        // rotate refresh token (recommended)
+        // rotate refresh token
         rt.setRevoked(true);
         refreshTokenRepository.save(rt);
 

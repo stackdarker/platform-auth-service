@@ -1,4 +1,4 @@
-package com.stackdarker.platform.auth.security;
+package com.stackdarker.platform.auth.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

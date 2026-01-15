@@ -18,9 +18,6 @@ public class UserEntity {
     @Column(name = "id", nullable = false, updatable = false)
     private UUID id;
 
-    /**
-     * Stored as TEXT in Postgres. Keep normalization consistent.
-     */
     @Column(name = "email", nullable = false)
     private String email;
 
