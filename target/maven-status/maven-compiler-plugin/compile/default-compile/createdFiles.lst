@@ -2,7 +2,6 @@ com\stackdarker\platform\auth\persistence\SessionRepository.class
 com\stackdarker\platform\auth\api\HealthController.class
 com\stackdarker\platform\auth\api\SessionsController.class
 com\stackdarker\platform\auth\config\OpenApiConfig.class
-com\stackdarker\platform\auth\config\SecurityConfig.class
 com\stackdarker\platform\auth\exception\ApiExceptionHandler.class
 com\stackdarker\platform\auth\service\SessionService.class
 com\stackdarker\platform\auth\api\AuthController.class

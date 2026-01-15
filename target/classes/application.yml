@@ -22,10 +22,10 @@ spring:
       host: localhost
       port: 6379
 
-auth:
+app:
   jwt:
     issuer: platform-auth-service
-    accessTokenSeconds: 900
-    refreshTokenSeconds: 1209600
-    # Use a long random base64 secret in real usage
-    secret: "dev-secret-change-me-dev-secret-change-me-dev-secret-change-me"
+    access-ttl-seconds: 900
+    refresh-ttl-seconds: 1209600
+    secret: "ilovesoftwareisaythroughgrittedteeth"
+

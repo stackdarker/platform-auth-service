@@ -1,8 +1,6 @@
 package com.stackdarker.platform.auth.api;
 
-import com.stackdarker.platform.auth.api.dto.LoginRequest;
-import com.stackdarker.platform.auth.api.dto.MeResponse;
-import com.stackdarker.platform.auth.api.dto.RegisterRequest;
+import com.stackdarker.platform.auth.api.dto.*;
 import com.stackdarker.platform.auth.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -20,12 +18,17 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public MeResponse register(@Valid @RequestBody RegisterRequest request) {
+    public AuthResponse register(@Valid @RequestBody RegisterRequest request) {
         return authService.register(request);
     }
 
     @PostMapping("/login")
-    public MeResponse login(@Valid @RequestBody LoginRequest request) {
+    public AuthResponse login(@Valid @RequestBody LoginRequest request) {
         return authService.login(request);
+    }
+
+    @PostMapping("/refresh")
+    public AuthResponse refresh(@Valid @RequestBody RefreshRequest request) {
+        return authService.refresh(request);
     }
 }
