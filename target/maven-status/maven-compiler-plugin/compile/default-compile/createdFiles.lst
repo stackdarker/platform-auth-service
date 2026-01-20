@@ -3,7 +3,6 @@ com\stackdarker\platform\auth\service\SessionService.class
 com\stackdarker\platform\auth\domain\Session.class
 com\stackdarker\platform\auth\service\AuthService.class
 com\stackdarker\platform\auth\persistence\UserRepository.class
-com\stackdarker\platform\auth\config\RequestIdFilter.class
 com\stackdarker\platform\auth\domain\User.class
 com\stackdarker\platform\auth\api\HealthController.class
 com\stackdarker\platform\auth\api\SessionsController.class

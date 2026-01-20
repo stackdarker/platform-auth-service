@@ -11,6 +11,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import com.stackdarker.platform.auth.service.exceptions.InvalidRefreshTokenException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,12 +72,26 @@ public class ApiExceptionHandler {
         );
     }
 
+        @ExceptionHandler(InvalidRefreshTokenException.class)
+        public ResponseEntity<ErrorResponse> handleInvalidRefresh(
+                InvalidRefreshTokenException ex,
+                HttpServletRequest request
+        ) {
+                return build(
+                        HttpStatus.UNAUTHORIZED,
+                        "AUTH_INVALID_REFRESH",
+                        "Invalid or expired refresh token.",
+                        request,
+                        List.of(new ErrorItem("INVALID_REFRESH", "Invalid or expired refresh token."))
+                );
+        }
+    
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleUnexpected(
             Exception ex,
             HttpServletRequest request
     ) {
-        // Keep details out of response; log server-side later
         return build(
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 "INTERNAL_ERROR",
@@ -119,4 +134,6 @@ public class ApiExceptionHandler {
         if (s.length() > 200) return s.substring(0, 200) + "...";
         return s;
     }
+
+    
 }

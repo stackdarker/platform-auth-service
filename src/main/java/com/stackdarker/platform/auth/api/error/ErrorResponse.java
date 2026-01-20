@@ -1,6 +1,7 @@
 package com.stackdarker.platform.auth.api.error;
 
 import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 public class ErrorResponse {
@@ -12,7 +13,7 @@ public class ErrorResponse {
     private String message;     // readable summary
     private String path;        // request path
     private String requestId;   // X-Request-Id
-    private List<ErrorItem> errors; // details
+    private List<ErrorItem> errors; 
 
     public ErrorResponse() {}
 
@@ -39,4 +40,9 @@ public class ErrorResponse {
 
     public List<ErrorItem> getErrors() { return errors; }
     public void setErrors(List<ErrorItem> errors) { this.errors = errors; }
+
+    public void setTimestamp(OffsetDateTime now) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setTimestamp'");
+    }
 }

@@ -2,12 +2,14 @@ package com.stackdarker.platform.auth.service;
 
 import com.stackdarker.platform.auth.api.dto.AuthResponse;
 import com.stackdarker.platform.auth.api.dto.LoginRequest;
+import com.stackdarker.platform.auth.api.dto.LogoutRequest;
 import com.stackdarker.platform.auth.api.dto.RefreshRequest;
 import com.stackdarker.platform.auth.api.dto.RegisterRequest;
 import com.stackdarker.platform.auth.security.JwtProperties;
 import com.stackdarker.platform.auth.security.JwtService;
 import com.stackdarker.platform.auth.service.exceptions.EmailAlreadyExistsException;
 import com.stackdarker.platform.auth.service.exceptions.InvalidCredentialsException;
+import com.stackdarker.platform.auth.service.exceptions.InvalidRefreshTokenException;
 import com.stackdarker.platform.auth.token.RefreshTokenEntity;
 import com.stackdarker.platform.auth.token.RefreshTokenRepository;
 import com.stackdarker.platform.auth.user.UserEntity;
@@ -69,28 +71,57 @@ public class AuthService {
         if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
             throw new InvalidCredentialsException();
         }
+
         return issueTokens(user);
     }
 
+    /**
+     * Refresh flow (rotation):
+     * - validate refresh token
+     * - revoke old token
+     * - issue new access + new refresh
+     */
     @Transactional
     public AuthResponse refresh(RefreshRequest request) {
-        UUID token = parseRefreshToken(request.getRefreshToken());
+        UUID token = parseRefreshTokenOrThrow(request.getRefreshToken());
 
         RefreshTokenEntity rt = refreshTokenRepository.findByToken(token)
-                .orElseThrow(InvalidCredentialsException::new);
+                .orElseThrow(InvalidRefreshTokenException::new);
 
         if (rt.isRevoked() || rt.getExpiresAt().isBefore(Instant.now())) {
-            throw new InvalidCredentialsException();
+            throw new InvalidRefreshTokenException();
         }
 
         UserEntity user = userRepository.findById(rt.getUserId())
-                .orElseThrow(InvalidCredentialsException::new);
+                .orElseThrow(InvalidRefreshTokenException::new);
 
-        // rotate refresh token
+        // rotate: revoke current refresh token
         rt.setRevoked(true);
         refreshTokenRepository.save(rt);
 
+        // issue brand new pair
         return issueTokens(user);
+    }
+
+    /**
+     * logout = revoke the provided refresh token
+     */
+    @Transactional
+    public void logout(UUID userId, LogoutRequest request) {
+        UUID token = parseRefreshTokenOrThrow(request.getRefreshToken());
+
+        RefreshTokenEntity rt = refreshTokenRepository.findByToken(token)
+                .orElseThrow(InvalidRefreshTokenException::new);
+
+        // ensure token belongs to the caller
+        if (!userId.equals(rt.getUserId())) {
+            throw new InvalidRefreshTokenException();
+        }
+
+        if (!rt.isRevoked()) {
+            rt.setRevoked(true);
+            refreshTokenRepository.save(rt);
+        }
     }
 
     private AuthResponse issueTokens(UserEntity user) {
@@ -120,11 +151,11 @@ public class AuthService {
         return normalizedEmail;
     }
 
-    private UUID parseRefreshToken(String refreshToken) {
+    private UUID parseRefreshTokenOrThrow(String refreshToken) {
         try {
             return UUID.fromString(refreshToken);
         } catch (Exception e) {
-            throw new InvalidCredentialsException();
+            throw new InvalidRefreshTokenException();
         }
     }
 }

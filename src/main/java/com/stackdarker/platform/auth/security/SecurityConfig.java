@@ -1,7 +1,9 @@
 package com.stackdarker.platform.auth.security;
 
+import com.stackdarker.platform.auth.web.RequestIdFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -11,22 +13,54 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
 
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JsonAuthenticationEntryPoint jsonAuthenticationEntryPoint;
+    private final JsonAccessDeniedHandler jsonAccessDeniedHandler;
+    private final RequestIdFilter requestIdFilter;
+
+    public SecurityConfig(
+            JwtAuthenticationFilter jwtAuthenticationFilter,
+            JsonAuthenticationEntryPoint jsonAuthenticationEntryPoint,
+            JsonAccessDeniedHandler jsonAccessDeniedHandler,
+            RequestIdFilter requestIdFilter
+    ) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.jsonAuthenticationEntryPoint = jsonAuthenticationEntryPoint;
+        this.jsonAccessDeniedHandler = jsonAccessDeniedHandler;
+        this.requestIdFilter = requestIdFilter;
+    }
+
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtFilter) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
-                .httpBasic(Customizer.withDefaults())
+                .cors(Customizer.withDefaults())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+                // disable default auth mechanisms
+                .httpBasic(b -> b.disable())
+                .formLogin(f -> f.disable())
+                .logout(l -> l.disable())
+
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(jsonAuthenticationEntryPoint)
+                        .accessDeniedHandler(jsonAccessDeniedHandler)
+                )
+
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/v1/health",
+                        .requestMatchers("/v1/health").permitAll()
+                        .requestMatchers(HttpMethod.POST,
                                 "/v1/auth/register",
                                 "/v1/auth/login",
                                 "/v1/auth/refresh"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+
+                // put RequestIdFilter early, then JWT filter
+                .addFilterBefore(requestIdFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(jwtAuthenticationFilter, RequestIdFilter.class)
+
                 .build();
     }
 }
