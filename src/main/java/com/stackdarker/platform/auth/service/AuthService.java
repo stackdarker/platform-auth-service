@@ -1,10 +1,6 @@
 package com.stackdarker.platform.auth.service;
 
-import com.stackdarker.platform.auth.api.dto.AuthResponse;
-import com.stackdarker.platform.auth.api.dto.LoginRequest;
-import com.stackdarker.platform.auth.api.dto.LogoutRequest;
-import com.stackdarker.platform.auth.api.dto.RefreshRequest;
-import com.stackdarker.platform.auth.api.dto.RegisterRequest;
+import com.stackdarker.platform.auth.api.dto.*;
 import com.stackdarker.platform.auth.security.JwtProperties;
 import com.stackdarker.platform.auth.security.JwtService;
 import com.stackdarker.platform.auth.service.exceptions.EmailAlreadyExistsException;
@@ -75,15 +71,9 @@ public class AuthService {
         return issueTokens(user);
     }
 
-    /**
-     * Refresh flow (rotation):
-     * - validate refresh token
-     * - revoke old token
-     * - issue new access + new refresh
-     */
     @Transactional
     public AuthResponse refresh(RefreshRequest request) {
-        UUID token = parseRefreshTokenOrThrow(request.getRefreshToken());
+        UUID token = parseRefreshToken(request.getRefreshToken());
 
         RefreshTokenEntity rt = refreshTokenRepository.findByToken(token)
                 .orElseThrow(InvalidRefreshTokenException::new);
@@ -95,33 +85,27 @@ public class AuthService {
         UserEntity user = userRepository.findById(rt.getUserId())
                 .orElseThrow(InvalidRefreshTokenException::new);
 
-        // rotate: revoke current refresh token
+        // rotate: revoke old refresh token, mint a new one
         rt.setRevoked(true);
         refreshTokenRepository.save(rt);
 
-        // issue brand new pair
         return issueTokens(user);
     }
 
-    /**
-     * logout = revoke the provided refresh token
-     */
     @Transactional
-    public void logout(UUID userId, LogoutRequest request) {
-        UUID token = parseRefreshTokenOrThrow(request.getRefreshToken());
+    public void logout(UUID userId, LogoutRequest req) {
+        UUID token = parseRefreshToken(req.getRefreshToken());
 
         RefreshTokenEntity rt = refreshTokenRepository.findByToken(token)
                 .orElseThrow(InvalidRefreshTokenException::new);
 
-        // ensure token belongs to the caller
-        if (!userId.equals(rt.getUserId())) {
+        // don't allow someone revoke another user's token
+        if (!rt.getUserId().equals(userId)) {
             throw new InvalidRefreshTokenException();
         }
 
-        if (!rt.isRevoked()) {
-            rt.setRevoked(true);
-            refreshTokenRepository.save(rt);
-        }
+        rt.setRevoked(true);
+        refreshTokenRepository.save(rt);
     }
 
     private AuthResponse issueTokens(UserEntity user) {
@@ -151,7 +135,7 @@ public class AuthService {
         return normalizedEmail;
     }
 
-    private UUID parseRefreshTokenOrThrow(String refreshToken) {
+    private UUID parseRefreshToken(String refreshToken) {
         try {
             return UUID.fromString(refreshToken);
         } catch (Exception e) {

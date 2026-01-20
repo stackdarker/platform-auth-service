@@ -3,14 +3,12 @@ package com.stackdarker.platform.auth.api;
 import com.stackdarker.platform.auth.api.dto.*;
 import com.stackdarker.platform.auth.service.AuthService;
 import jakarta.validation.Valid;
-
-import java.util.UUID;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import com.stackdarker.platform.auth.api.dto.LogoutRequest;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/v1/auth")
@@ -40,8 +38,21 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(@Valid @RequestBody LogoutRequest req, Authentication auth) {
-        UUID userId = (UUID) auth.getPrincipal();
+        UUID userId = UUID.fromString(auth.getName()); // expects auth.getName() = userId
         authService.logout(userId, req);
         return ResponseEntity.noContent().build();
     }
+
+
+    private UUID extractUserId(Authentication auth) {
+        Object p = auth.getPrincipal();
+        if (p instanceof UUID uuid) return uuid;
+
+        try {
+            return UUID.fromString(auth.getName());
+        } catch (Exception ignored) {
+            // last attempt: principal.toString()
+            return UUID.fromString(String.valueOf(p));
+        }
     }
+}
