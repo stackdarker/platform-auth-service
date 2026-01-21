@@ -1,0 +1,16 @@
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+auth:
+  jwt:
+    issuer: platform-auth-service-test
+    accessTokenSeconds: 900
+    refreshTokenSeconds: 1209600
+    secret: "test-secret-test-secret-test-secret-test-secret"
