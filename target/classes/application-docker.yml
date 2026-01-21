@@ -3,26 +3,11 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://postgres:5432/platform_auth
+    url: jdbc:postgresql://auth-db:5432/platform_auth
     username: auth_user
     password: auth_pass
-
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    open-in-view: false
-
-  flyway:
-    enabled: true
 
   data:
     redis:
       host: redis
       port: 6379
-
-app:
-  jwt:
-    issuer: platform-auth-service
-    access-ttl-seconds: 900
-    refresh-ttl-seconds: 1209600
-    secret: ${JWT_SECRET}

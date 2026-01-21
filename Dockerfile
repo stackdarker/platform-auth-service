@@ -1,30 +1,26 @@
-    # ---------- Build stage ----------
-    FROM maven:3.9.9-eclipse-temurin-17 AS build
-
+# ---- build stage ----
+    FROM maven:3.9-eclipse-temurin-17 AS build
     WORKDIR /app
     
-    # Copy pom first to leverage Docker cache
     COPY pom.xml .
-    RUN mvn -B -q dependency:go-offline
-    
-    # Copy source and build
     COPY src ./src
-    RUN mvn -B -q clean package -DskipTests
     
+    # Build the Spring Boot fat jar (creates *.jar and *.jar.original)
+    RUN mvn -DskipTests clean package
     
-    # ---------- Runtime stage ----------
+    # Copy ONLY the fat jar (exclude *.jar.original)
+    RUN set -eux; \
+        JAR="$(ls -1 target/*.jar | grep -v '\.jar\.original$' | head -n 1)"; \
+        cp "$JAR" /app/app.jar; \
+        echo "Using jar: $JAR"; \
+        jar tf /app/app.jar | head -n 5
+    
+    # ---- runtime stage ----
     FROM eclipse-temurin:17-jre
-    
     WORKDIR /app
     
-    # Copy only the built jar
-    COPY --from=build /app/target/*jar app.jar
+    COPY --from=build /app/app.jar /app/app.jar
     
-    # Spring Boot port
     EXPOSE 8081
-    
-    # JVM tuning for containers
-    ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75"
-    
-    ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
+    ENTRYPOINT ["java","-jar","/app/app.jar"]
     

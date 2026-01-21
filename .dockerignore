@@ -1,19 +1,6 @@
-# Build artifacts
-target/
-node_modules/
-
-# IDE / OS junk
-.idea/
-.vscode/
-*.iml
-.DS_Store
-
-# Git
-.git/
+target
+.git
 .gitignore
-
-# Logs
-*.log
-
-# Env files (handled by compose)
-.env
+.idea
+.vscode
+*.iml
