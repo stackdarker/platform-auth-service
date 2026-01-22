@@ -48,20 +48,14 @@ public class SecurityConfig {
                 )
 
                 .authorizeHttpRequests(auth -> auth
-                        // Public health endpoints
                         .requestMatchers("/v1/health").permitAll()
-                    
-                        // Actuator health endpoints 
-                        .requestMatchers("/actuator/health", "/actuator/health/**").permitAll()
-                    
-                        // Public auth endpoints
+                        .requestMatchers("/actuator/health/**").permitAll()
+                        .requestMatchers("/actuator/prometheus").permitAll()
                         .requestMatchers(HttpMethod.POST,
                             "/v1/auth/register",
                             "/v1/auth/login",
                             "/v1/auth/refresh"
                         ).permitAll()
-                    
-                        // Everything else requires JWT
                         .anyRequest().authenticated()
                     )
                     

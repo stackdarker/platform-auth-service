@@ -15,12 +15,10 @@ spring:
 management:
   endpoints:
     web:
-      base-path: /actuator
       exposure:
-        include: health,info
+        include: health,info,metrics,prometheus
   endpoint:
     health:
-      show-details: never
       probes:
         enabled: true
   health:
