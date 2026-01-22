@@ -29,3 +29,18 @@ app:
     refresh-ttl-seconds: 1209600
     secret: "ilovesoftwareisaythroughgrittedteeth"
 
+    management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+
