@@ -48,16 +48,21 @@ public class SecurityConfig {
                 )
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/v1/health").permitAll()
-                        .requestMatchers("/actuator/health/**").permitAll()
-                        .requestMatchers("/actuator/prometheus").permitAll()
-                        .requestMatchers(HttpMethod.POST,
-                            "/v1/auth/register",
-                            "/v1/auth/login",
-                            "/v1/auth/refresh"
-                        ).permitAll()
-                        .anyRequest().authenticated()
-                    )
+                    .requestMatchers("/v1/health").permitAll()
+                    .requestMatchers(
+                        "/actuator/health",
+                        "/actuator/health/**",
+                        "/actuator/prometheus",
+                        "/actuator/metrics",
+                        "/actuator/metrics/**"
+                    ).permitAll()
+                    .requestMatchers(HttpMethod.POST,
+                        "/v1/auth/register",
+                        "/v1/auth/login",
+                        "/v1/auth/refresh"
+                    ).permitAll()
+                    .anyRequest().authenticated()
+                )                
                     
 
                 // put RequestIdFilter early, then JWT filter
