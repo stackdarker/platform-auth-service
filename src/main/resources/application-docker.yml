@@ -21,7 +21,6 @@ management:
     health:
       probes:
         enabled: true
-      show-details: never
   health:
     livenessstate:
       enabled: true
@@ -36,3 +35,16 @@ management:
         http.server.requests: true
       slo:
         http.server.requests: 50ms,100ms,250ms,500ms,1s,2s
+  tracing:
+    enabled: true
+    sampling:
+      probability: 1.0  # demo-mode; later reduce to 0.1 or lower
+  otlp:
+    tracing:
+      endpoint: http://tempo:4318/v1/traces
+
+logging:
+  level:
+    root: INFO
+    pattern:
+    level: "%5p [traceId=%X{traceId} spanId=%X{spanId}]"
