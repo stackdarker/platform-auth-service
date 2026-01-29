@@ -14,6 +14,7 @@ com\stackdarker\platform\auth\config\MetricsConfig.class
 com\stackdarker\platform\auth\security\SecurityConfig.class
 com\stackdarker\platform\auth\api\dto\ErrorItem.class
 com\stackdarker\platform\auth\domain\Session.class
+com\stackdarker\platform\auth\observability\RequestTraceLogFilter.class
 com\stackdarker\platform\auth\service\AuthService.class
 com\stackdarker\platform\auth\token\RefreshTokenEntity.class
 com\stackdarker\platform\auth\persistence\UserRepository.class
@@ -41,6 +42,7 @@ com\stackdarker\platform\auth\exception\ApiExceptionHandler.class
 com\stackdarker\platform\auth\user\UserEntity.class
 com\stackdarker\platform\auth\api\AuthController.class
 com\stackdarker\platform\auth\api\dto\ErrorResponse.class
+com\stackdarker\platform\auth\config\TraceMdcFilter.class
 com\stackdarker\platform\auth\persistence\SessionEntity.class
 com\stackdarker\platform\auth\api\error\ErrorResponse.class
 com\stackdarker\platform\auth\api\dto\LogoutRequest.class

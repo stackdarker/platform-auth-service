@@ -1,6 +1,7 @@
 package com.stackdarker.platform.auth.service;
 
 import com.stackdarker.platform.auth.api.dto.*;
+import com.stackdarker.platform.auth.metrics.AuthMetrics; 
 import com.stackdarker.platform.auth.security.JwtProperties;
 import com.stackdarker.platform.auth.security.JwtService;
 import com.stackdarker.platform.auth.service.exceptions.EmailAlreadyExistsException;
@@ -25,71 +26,96 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final JwtProperties jwtProperties;
+    private final AuthMetrics metrics; 
 
     public AuthService(
             UserRepository userRepository,
             RefreshTokenRepository refreshTokenRepository,
             PasswordEncoder passwordEncoder,
             JwtService jwtService,
-            JwtProperties jwtProperties
+            JwtProperties jwtProperties,
+            AuthMetrics metrics 
     ) {
         this.userRepository = userRepository;
         this.refreshTokenRepository = refreshTokenRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.jwtProperties = jwtProperties;
+        this.metrics = metrics; 
     }
 
     @Transactional
     public AuthResponse register(RegisterRequest request) {
-        final String emailNormalized = requireEmail(normalizeEmail(request.getEmail()));
+        try {
+            final String emailNormalized = requireEmail(normalizeEmail(request.getEmail()));
 
-        if (userRepository.existsByEmailIgnoreCase(emailNormalized)) {
-            throw new EmailAlreadyExistsException(emailNormalized);
+            if (userRepository.existsByEmailIgnoreCase(emailNormalized)) {
+                throw new EmailAlreadyExistsException(emailNormalized);
+            }
+
+            UserEntity user = new UserEntity();
+            user.setEmail(emailNormalized);
+            user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
+            user.setDisplayName(null);
+
+            UserEntity saved = userRepository.save(user);
+
+            AuthResponse res = issueTokensTimed(saved); 
+            metrics.registerSuccess();                  
+            return res;
+        } catch (EmailAlreadyExistsException e) {
+            metrics.registerFailure();                  
+            throw e;
         }
-
-        UserEntity user = new UserEntity();
-        user.setEmail(emailNormalized);
-        user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
-        user.setDisplayName(null);
-
-        UserEntity saved = userRepository.save(user);
-        return issueTokens(saved);
     }
 
     @Transactional
     public AuthResponse login(LoginRequest request) {
-        final String emailNormalized = requireEmail(normalizeEmail(request.getEmail()));
+        try {
+            final String emailNormalized = requireEmail(normalizeEmail(request.getEmail()));
 
-        UserEntity user = userRepository.findByEmailIgnoreCase(emailNormalized)
-                .orElseThrow(InvalidCredentialsException::new);
+            UserEntity user = userRepository.findByEmailIgnoreCase(emailNormalized)
+                    .orElseThrow(InvalidCredentialsException::new);
 
-        if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
-            throw new InvalidCredentialsException();
+            if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
+                throw new InvalidCredentialsException();
+            }
+
+            AuthResponse res = issueTokensTimed(user); 
+            metrics.loginSuccess();                    
+            return res;
+        } catch (InvalidCredentialsException e) {
+            metrics.loginFailure();                    
+            throw e;
         }
-
-        return issueTokens(user);
     }
 
     @Transactional
     public AuthResponse refresh(RefreshRequest request) {
-        UUID token = parseRefreshToken(request.getRefreshToken());
+        try {
+            UUID token = parseRefreshToken(request.getRefreshToken());
 
-        RefreshTokenEntity rt = refreshTokenRepository.findByToken(token)
-                .orElseThrow(InvalidRefreshTokenException::new);
+            RefreshTokenEntity rt = refreshTokenRepository.findByToken(token)
+                    .orElseThrow(InvalidRefreshTokenException::new);
 
-        if (rt.isRevoked() || rt.getExpiresAt().isBefore(Instant.now())) {
-            throw new InvalidRefreshTokenException();
+            if (rt.isRevoked() || rt.getExpiresAt().isBefore(Instant.now())) {
+                throw new InvalidRefreshTokenException();
+            }
+
+            UserEntity user = userRepository.findById(rt.getUserId())
+                    .orElseThrow(InvalidRefreshTokenException::new);
+
+            // rotate: revoke old refresh token, mint a new one
+            rt.setRevoked(true);
+            refreshTokenRepository.save(rt);
+
+            AuthResponse res = issueTokensTimed(user); 
+            metrics.refreshSuccess();                 
+            return res;
+        } catch (InvalidRefreshTokenException e) {
+            metrics.refreshFailure();                  
+            throw e;
         }
-
-        UserEntity user = userRepository.findById(rt.getUserId())
-                .orElseThrow(InvalidRefreshTokenException::new);
-
-        // rotate: revoke old refresh token, mint a new one
-        rt.setRevoked(true);
-        refreshTokenRepository.save(rt);
-
-        return issueTokens(user);
     }
 
     @Transactional
@@ -99,13 +125,16 @@ public class AuthService {
         RefreshTokenEntity rt = refreshTokenRepository.findByToken(token)
                 .orElseThrow(InvalidRefreshTokenException::new);
 
-        // don't allow someone revoke another user's token
         if (!rt.getUserId().equals(userId)) {
             throw new InvalidRefreshTokenException();
         }
 
         rt.setRevoked(true);
         refreshTokenRepository.save(rt);
+    }
+
+    private AuthResponse issueTokensTimed(UserEntity user) {
+        return metrics.timeTokenIssueUnchecked(() -> issueTokens(user)); 
     }
 
     private AuthResponse issueTokens(UserEntity user) {

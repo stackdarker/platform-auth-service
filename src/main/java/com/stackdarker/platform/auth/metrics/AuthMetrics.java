@@ -1,5 +1,6 @@
 package com.stackdarker.platform.auth.metrics;
 
+import java.util.function.Supplier;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
@@ -22,35 +23,36 @@ public class AuthMetrics {
     private final Timer tokenIssueTimer;
 
     public AuthMetrics(MeterRegistry registry) {
-        this.registerSuccess = Counter.builder("auth_register_total")
-                .description("Total successful user registrations")
-                .tag("result", "success")
-                .register(registry);
-
-        this.registerFailure = Counter.builder("auth_register_total")
-                .description("Total failed user registrations")
+        this.registerSuccess = Counter.builder("auth_register")
+        .description("Total user registration attempts")
+        .tag("result", "success")
+        .register(registry);
+    
+        this.registerFailure = Counter.builder("auth_register")
+                .description("Total user registration attempts")
                 .tag("result", "failure")
                 .register(registry);
-
-        this.loginSuccess = Counter.builder("auth_login_total")
-                .description("Total successful logins")
+        
+        this.loginSuccess = Counter.builder("auth_login")
+                .description("Total login attempts")
                 .tag("result", "success")
                 .register(registry);
-
-        this.loginFailure = Counter.builder("auth_login_total")
-                .description("Total failed logins")
+        
+        this.loginFailure = Counter.builder("auth_login")
+                .description("Total login attempts")
                 .tag("result", "failure")
                 .register(registry);
-
-        this.refreshSuccess = Counter.builder("auth_refresh_total")
-                .description("Total successful token refreshes")
+        
+        this.refreshSuccess = Counter.builder("auth_refresh")
+                .description("Total refresh attempts")
                 .tag("result", "success")
                 .register(registry);
-
-        this.refreshFailure = Counter.builder("auth_refresh_total")
-                .description("Total failed token refreshes")
+        
+        this.refreshFailure = Counter.builder("auth_refresh")
+                .description("Total refresh attempts")
                 .tag("result", "failure")
                 .register(registry);
+    
 
         this.tokenIssueTimer = Timer.builder("auth_token_issue_seconds")
                 .description("Time to issue tokens (access+refresh)")
@@ -71,5 +73,9 @@ public class AuthMetrics {
 
     public <T> T timeTokenIssue(java.util.concurrent.Callable<T> callable) throws Exception {
         return tokenIssueTimer.recordCallable(callable);
+    }
+
+    public <T> T timeTokenIssueUnchecked(Supplier<T> supplier) {
+        return tokenIssueTimer.record(supplier::get);
     }
 }
