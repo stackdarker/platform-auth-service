@@ -60,4 +60,4 @@ logging:
   level:
     root: INFO
   pattern:
-    level: "%5p [traceId=%X{traceId:-} spanId=%X{spanId:-} trace_id=%X{trace_id:-} span_id=%X{span_id:-}]"
+    level: "%5p [traceId=%X{traceId:-} spanId=%X{spanId:-}]"
