@@ -57,5 +57,7 @@ management:
         http.server.requests: 50ms,100ms,250ms,500ms,1s,2s
 
 logging:
+  level:
+    root: INFO
   pattern:
-    level: "%5p [trace=%X{traceId:-} span=%X{spanId:-}]"
+    level: "%5p [traceId=%X{traceId:-} spanId=%X{spanId:-} trace_id=%X{trace_id:-} span_id=%X{span_id:-}]"
