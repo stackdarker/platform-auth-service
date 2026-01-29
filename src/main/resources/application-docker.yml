@@ -11,6 +11,10 @@ spring:
     redis:
       host: redis
       port: 6379
+
+  application:
+    name: platform-auth-service
+    
 management:
   endpoints:
     web:
@@ -46,5 +50,5 @@ management:
 logging:
   level:
     root: INFO
-    pattern:
+  pattern:
     level: "%5p [traceId=%X{traceId} spanId=%X{spanId}]"

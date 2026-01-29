@@ -19,11 +19,13 @@ D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdark
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\api\HealthController.java
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\api\MeController.java
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\api\SessionsController.java
+D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\config\MetricsConfig.java
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\config\OpenApiConfig.java
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\config\PasswordConfig.java
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\domain\Session.java
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\domain\User.java
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\exception\ApiExceptionHandler.java
+D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\metrics\AuthMetrics.java
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\persistence\SessionEntity.java
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\persistence\SessionRepository.java
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\persistence\UserEntity.java

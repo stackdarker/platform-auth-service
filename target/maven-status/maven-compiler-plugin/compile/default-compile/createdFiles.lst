@@ -7,8 +7,10 @@ com\stackdarker\platform\auth\api\MeController.class
 com\stackdarker\platform\auth\web\RequestIdFilter.class
 com\stackdarker\platform\auth\api\dto\UserResponse.class
 com\stackdarker\platform\auth\service\exceptions\InvalidRefreshTokenException.class
+com\stackdarker\platform\auth\metrics\AuthMetrics.class
 com\stackdarker\platform\auth\security\JsonAuthenticationEntryPoint.class
 com\stackdarker\platform\auth\service\SessionService.class
+com\stackdarker\platform\auth\config\MetricsConfig.class
 com\stackdarker\platform\auth\security\SecurityConfig.class
 com\stackdarker\platform\auth\api\dto\ErrorItem.class
 com\stackdarker\platform\auth\domain\Session.class

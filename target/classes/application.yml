@@ -13,6 +13,8 @@ spring:
       hibernate:
         format_sql: true
     open-in-view: false
+  application:
+    name: platform-auth-service
 
   flyway:
     enabled: true
@@ -53,3 +55,7 @@ management:
         http.server.requests: true
       slo:
         http.server.requests: 50ms,100ms,250ms,500ms,1s,2s
+
+logging:
+  pattern:
+    level: "%5p [trace=%X{traceId:-} span=%X{spanId:-}]"
