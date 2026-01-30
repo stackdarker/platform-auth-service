@@ -3,7 +3,7 @@ com\stackdarker\platform\auth\api\dto\SessionResponse.class
 com\stackdarker\platform\auth\persistence\SessionRepository.class
 com\stackdarker\platform\auth\security\JwtService.class
 com\stackdarker\platform\auth\api\dto\AuthTokens.class
-com\stackdarker\platform\auth\api\MeController.class
+com\stackdarker\platform\auth\web\MeController.class
 com\stackdarker\platform\auth\web\RequestIdFilter.class
 com\stackdarker\platform\auth\api\dto\UserResponse.class
 com\stackdarker\platform\auth\service\exceptions\InvalidRefreshTokenException.class
@@ -24,6 +24,7 @@ com\stackdarker\platform\auth\api\error\ErrorItem.class
 com\stackdarker\platform\auth\api\dto\MeResponse.class
 com\stackdarker\platform\auth\security\JwtProperties.class
 com\stackdarker\platform\auth\api\dto\RefreshRequest.class
+com\stackdarker\platform\auth\observability\TraceResponseHeaderFilter.class
 com\stackdarker\platform\auth\security\JwtAuthenticationFilter.class
 com\stackdarker\platform\auth\domain\User.class
 com\stackdarker\platform\auth\session\SessionRepository.class
@@ -52,5 +53,6 @@ com\stackdarker\platform\auth\security\SecurityPropertiesConfig.class
 com\stackdarker\platform\auth\config\PasswordConfig.class
 com\stackdarker\platform\auth\user\UserRepository.class
 com\stackdarker\platform\auth\token\RefreshTokenRepository.class
+com\stackdarker\platform\auth\observability\MdcEnrichmentFilter.class
 com\stackdarker\platform\auth\persistence\UserEntity.class
 com\stackdarker\platform\auth\security\JsonAccessDeniedHandler.class

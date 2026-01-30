@@ -55,6 +55,12 @@ management:
         http.server.requests: true
       slo:
         http.server.requests: 50ms,100ms,250ms,500ms,1s,2s
+  tracing:
+    sampling:
+      probability: 1.0   # dev: 100% traces
+  otlp:
+    tracing:
+      endpoint: http://platform-tempo:4318/v1/traces
 
 logging:
   level:
@@ -63,4 +69,4 @@ logging:
     com.stackdarker: DEBUG
     root: INFO
   pattern:
-    level: "%5p [traceId=%X{traceId:-} spanId=%X{spanId:-}]"
+    level: "%5p [traceId=%X{traceId:-} spanId=%X{spanId:-} requestId=%X{requestId:-} userId=%X{userId:-}]"
