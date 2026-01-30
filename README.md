@@ -1,3 +1,9 @@
+
+---
+
+# 📘 `platform-auth-service/README.md`
+
+```md
 # Platform Auth Service
 
 A production-ready authentication and authorization service built with Spring Boot.
