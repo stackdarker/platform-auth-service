@@ -21,7 +21,7 @@ public class SecurityConfig {
     private final JsonAuthenticationEntryPoint jsonAuthenticationEntryPoint;
     private final JsonAccessDeniedHandler jsonAccessDeniedHandler;
     private final RequestIdFilter requestIdFilter;
-    RateLimitingFilter rateLimitingFilter;
+    private final RateLimitingFilter rateLimitingFilter;
     
 
     public SecurityConfig(

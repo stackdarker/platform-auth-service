@@ -3,11 +3,13 @@ com\stackdarker\platform\auth\api\dto\SessionResponse.class
 com\stackdarker\platform\auth\persistence\SessionRepository.class
 com\stackdarker\platform\auth\security\JwtService.class
 com\stackdarker\platform\auth\api\dto\AuthTokens.class
+com\stackdarker\platform\auth\audit\RequestContext.class
 com\stackdarker\platform\auth\ratelimit\RateLimitingFilter.class
 com\stackdarker\platform\auth\web\MeController.class
 com\stackdarker\platform\auth\web\RequestIdFilter.class
 com\stackdarker\platform\auth\api\dto\UserResponse.class
 com\stackdarker\platform\auth\service\exceptions\InvalidRefreshTokenException.class
+com\stackdarker\platform\auth\audit\RequestContextExtractor.class
 com\stackdarker\platform\auth\metrics\AuthMetrics.class
 com\stackdarker\platform\auth\ratelimit\RateLimitExceededException.class
 com\stackdarker\platform\auth\security\JsonAuthenticationEntryPoint.class
@@ -30,6 +32,7 @@ com\stackdarker\platform\auth\observability\TraceResponseHeaderFilter.class
 com\stackdarker\platform\auth\security\JwtAuthenticationFilter.class
 com\stackdarker\platform\auth\domain\User.class
 com\stackdarker\platform\auth\session\SessionRepository.class
+com\stackdarker\platform\auth\audit\AuthAuditEventRepository.class
 com\stackdarker\platform\auth\api\dto\RegisterRequest.class
 com\stackdarker\platform\auth\ratelimit\RateLimitProperties$BucketSpec.class
 com\stackdarker\platform\auth\ratelimit\RateLimitConfig.class
@@ -37,6 +40,7 @@ com\stackdarker\platform\auth\api\HealthController.class
 com\stackdarker\platform\auth\api\SessionsController.class
 com\stackdarker\platform\auth\token\RefreshTokenCodec.class
 com\stackdarker\platform\auth\security\RequestIdSupport.class
+com\stackdarker\platform\auth\audit\AuthAuditOutcome.class
 com\stackdarker\platform\auth\ratelimit\RateLimitFilter.class
 com\stackdarker\platform\auth\session\SessionEntity.class
 com\stackdarker\platform\auth\config\OpenApiConfig.class
@@ -44,6 +48,7 @@ com\stackdarker\platform\auth\ratelimit\RateLimitProperties$AuthSpec.class
 com\stackdarker\platform\auth\api\dto\PageMeta.class
 com\stackdarker\platform\auth\ratelimit\RateLimitKeyResolver.class
 com\stackdarker\platform\auth\api\dto\SessionDto.class
+com\stackdarker\platform\auth\audit\AuthAuditEventType.class
 com\stackdarker\platform\auth\api\dto\AuthTokensResponse.class
 com\stackdarker\platform\auth\api\dto\PagedSessionsResponse.class
 com\stackdarker\platform\auth\exception\ApiExceptionHandler.class
@@ -53,7 +58,9 @@ com\stackdarker\platform\auth\api\dto\ErrorResponse.class
 com\stackdarker\platform\auth\config\TraceMdcFilter.class
 com\stackdarker\platform\auth\persistence\SessionEntity.class
 com\stackdarker\platform\auth\api\error\ErrorResponse.class
+com\stackdarker\platform\auth\audit\AuthAuditService.class
 com\stackdarker\platform\auth\api\dto\LogoutRequest.class
+com\stackdarker\platform\auth\audit\AuthAuditEventEntity.class
 com\stackdarker\platform\auth\PlatformAuthServiceApplication.class
 com\stackdarker\platform\auth\service\exceptions\InvalidCredentialsException.class
 com\stackdarker\platform\auth\security\SecurityPropertiesConfig.class

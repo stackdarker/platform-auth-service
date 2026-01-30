@@ -18,6 +18,13 @@ D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdark
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\api\error\ErrorResponse.java
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\api\HealthController.java
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\api\SessionsController.java
+D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\audit\AuthAuditEventEntity.java
+D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\audit\AuthAuditEventRepository.java
+D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\audit\AuthAuditEventType.java
+D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\audit\AuthAuditOutcome.java
+D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\audit\AuthAuditService.java
+D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\audit\RequestContext.java
+D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\audit\RequestContextExtractor.java
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\config\MetricsConfig.java
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\config\OpenApiConfig.java
 D:\Projects\platform-workspace\platform-auth-service\src\main\java\com\stackdarker\platform\auth\config\PasswordConfig.java

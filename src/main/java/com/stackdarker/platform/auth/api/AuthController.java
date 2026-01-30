@@ -38,16 +38,18 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(@Valid @RequestBody LogoutRequest req, Authentication auth) {
-        UUID userId = UUID.fromString(auth.getName());
+        UUID userId = extractUserId(auth);
         authService.logout(userId, req);
         return ResponseEntity.noContent().build();
-    }    
-
+    }
 
     private UUID extractUserId(Authentication auth) {
+        if (auth == null) throw new IllegalStateException("Authentication is required");
+
         Object p = auth.getPrincipal();
         if (p instanceof UUID uuid) return uuid;
 
+        // fallback: sometimes name is UUID string
         try {
             return UUID.fromString(auth.getName());
         } catch (Exception ignored) {
