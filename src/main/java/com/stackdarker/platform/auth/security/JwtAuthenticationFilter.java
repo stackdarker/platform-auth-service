@@ -50,16 +50,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
             var authentication = new UsernamePasswordAuthenticationToken(
-                    userId, // principal = UUID
-                    null,
-                    List.of(new SimpleGrantedAuthority("ROLE_USER"))
-            );
+                userId.toString(), //  IMPORTANT
+                null,
+                List.of(new SimpleGrantedAuthority("ROLE_USER"))
+            );            
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (Exception e) {
-            // security will trigger entry point (401) on protected endpoints
+            logger.warn("JWT auth failed: {}", e);
             SecurityContextHolder.clearContext();
-        }
+        }        
 
         filterChain.doFilter(request, response);
     }

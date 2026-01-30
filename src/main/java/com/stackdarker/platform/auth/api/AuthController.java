@@ -38,10 +38,10 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(@Valid @RequestBody LogoutRequest req, Authentication auth) {
-        UUID userId = UUID.fromString(auth.getName()); // expects auth.getName() = userId
+        UUID userId = UUID.fromString(auth.getName());
         authService.logout(userId, req);
         return ResponseEntity.noContent().build();
-    }
+    }    
 
 
     private UUID extractUserId(Authentication auth) {

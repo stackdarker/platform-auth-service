@@ -58,6 +58,9 @@ management:
 
 logging:
   level:
+    org.springframework.security: DEBUG
+    org.springframework.web: INFO
+    com.stackdarker: DEBUG
     root: INFO
   pattern:
     level: "%5p [traceId=%X{traceId:-} spanId=%X{spanId:-}]"
