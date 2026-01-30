@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import com.stackdarker.platform.auth.ratelimit.RateLimitingFilter;
+
 
 @Configuration
 public class SecurityConfig {
@@ -19,19 +21,23 @@ public class SecurityConfig {
     private final JsonAuthenticationEntryPoint jsonAuthenticationEntryPoint;
     private final JsonAccessDeniedHandler jsonAccessDeniedHandler;
     private final RequestIdFilter requestIdFilter;
+    RateLimitingFilter rateLimitingFilter;
+    
 
     public SecurityConfig(
             JwtAuthenticationFilter jwtAuthenticationFilter,
             MdcEnrichmentFilter mdcEnrichmentFilter,
             JsonAuthenticationEntryPoint jsonAuthenticationEntryPoint,
             JsonAccessDeniedHandler jsonAccessDeniedHandler,
-            RequestIdFilter requestIdFilter
+            RequestIdFilter requestIdFilter,
+            RateLimitingFilter rateLimitingFilter
     ) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.mdcEnrichmentFilter = mdcEnrichmentFilter;
         this.jsonAuthenticationEntryPoint = jsonAuthenticationEntryPoint;
         this.jsonAccessDeniedHandler = jsonAccessDeniedHandler;
         this.requestIdFilter = requestIdFilter;
+        this.rateLimitingFilter = rateLimitingFilter;
     }
 
     @Bean
@@ -74,6 +80,7 @@ public class SecurityConfig {
                 .addFilterBefore(requestIdFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(jwtAuthenticationFilter, RequestIdFilter.class)
                 .addFilterAfter(mdcEnrichmentFilter, JwtAuthenticationFilter.class)
+                .addFilterAfter(rateLimitingFilter, JwtAuthenticationFilter.class)
 
                 .build();
     }

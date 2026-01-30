@@ -52,3 +52,33 @@ logging:
     root: INFO
   pattern:
     level: "%5p [traceId=%X{traceId:-} spanId=%X{spanId:-}]"
+
+platform:
+  rate-limit:
+    enabled: true
+
+    auth:
+      login:
+        capacity: 10
+        refillTokens: 10
+        refillPeriodSeconds: 60
+      register:
+        capacity: 5
+        refillTokens: 5
+        refillPeriodSeconds: 60
+      refresh:
+        capacity: 20
+        refillTokens: 20
+        refillPeriodSeconds: 60
+
+    # General API bucket for authenticated calls
+    api:
+      capacity: 120
+      refillTokens: 120
+      refillPeriodSeconds: 60
+
+    # If unauthenticated but hitting non-auth endpoints, still protect
+    unauthenticatedApi:
+      capacity: 60
+      refillTokens: 60
+      refillPeriodSeconds: 60
