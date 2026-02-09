@@ -152,7 +152,19 @@
       <groupId>com.bucket4j</groupId>
       <artifactId>bucket4j-redis</artifactId>
       <version>8.10.1</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.bucket4j</groupId>
+          <artifactId>bucket4j-redis-common</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
+    <!-- Excluded bucket4j-redis-lettuce due to missing artifact -->
+    <!-- <dependency>
+      <groupId>com.bucket4j</groupId>
+      <artifactId>bucket4j-redis-lettuce</artifactId>
+      <version>8.10.1</version>
+    </dependency> -->
 
     <dependency>
       <groupId>io.lettuce</groupId>

@@ -5,6 +5,10 @@ import com.stackdarker.platform.auth.audit.AuthAuditEventType;
 import com.stackdarker.platform.auth.audit.AuthAuditService;
 import com.stackdarker.platform.auth.user.UserEntity;
 import com.stackdarker.platform.auth.user.UserRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -15,6 +19,8 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/v1")
+@Tag(name = "User", description = "Current user profile")
+@SecurityRequirement(name = "bearer-jwt")
 public class MeController {
 
     private final UserRepository userRepository;
@@ -25,6 +31,9 @@ public class MeController {
         this.audit = audit;
     }
 
+    @Operation(summary = "Get current user", description = "Returns the profile of the currently authenticated user")
+    @ApiResponse(responseCode = "200", description = "User profile retrieved")
+    @ApiResponse(responseCode = "401", description = "Not authenticated")
     @GetMapping("/me")
     public ResponseEntity<MeResponse> me(Authentication authentication, HttpServletRequest request) {
 
